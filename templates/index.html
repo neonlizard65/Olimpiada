@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet" href="{{url_for('static', filename="css/style.css")}}">
+    <link rel="stylesheet" href="{{url_for('static', filename="css/menu.css")}}">
+</head>
+<body>
+
+    {%include 'menu.html'%}
+
+    <div class="main">
+        <div class="main_button">
+            <a class="main_button_anchor" href="#" style="text-decoration: none;">
+                <div class="image_container">
+                    <img class="image_main_button" src="{{url_for('static', filename="res/single.png")}}" alt="Icon">
+                </div>
+                <div class="text_main_button">
+                    Личное посещение
+                </div>
+            </a>
+        </div>
+        <div class="main_button">
+            <a class="main_button_anchor" href="#" style="text-decoration: none;">
+                <div class="image_container">
+                    <img class="image_main_button" src="{{url_for('static', filename="res/group.png")}}" alt="Icon">
+                </div>
+                <div class="text_main_button">
+                    Групповое посещение
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
