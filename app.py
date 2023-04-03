@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_migrate import Migrate
-from models import Visitor
+from models import Visitor, Subdivision
 from connection import db
 import pandas as pd
 from models import Visitor
@@ -14,6 +14,10 @@ migrate = Migrate(app, db)
 @app.route("/")
 def index():
     return render_template('index.html')
+
+@app.route("/request.html")
+def request_form():
+  return render_template('request.html')  
 
 
 @app.route("/visitors", methods=['GET'])
@@ -44,4 +48,8 @@ def visitor_by_id(id):
         pass
     
     
-#@app.route("/subdivision")
+@app.route("/subdivision")
+def subdivision():
+    subdivisions = db.session.query(Subdivision).all()
+    return str(subdivisions)
+

@@ -1,0 +1,131 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.form_grid{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(235, 235, 235);
+    border-radius: 15px;
+    margin: 20px 30px;
+    height: 100%;
+    width: 100%;
+}
+
+h1.box_header{
+    background-color: rgb(255, 154, 30);
+    color: black;
+    border-radius: 15px;
+    text-align: center;
+    padding: 10px 0px;
+    font-weight: 300;
+    margin: 0px;
+    font-size: medium;
+    
+}
+
+h1{
+    text-align: center;
+}
+
+.form{
+    padding: 20px;
+}
+
+#subdivision{
+    width: 500px;
+}
+
+#employee_fio{
+    width: 500px;
+}
+
+#reason{
+    width: 250px;
+}
+
+label{
+    display: inline-block;
+    line-height: 30px;
+    min-width: 100px;
+}
+
+input{
+    border-radius: 5px;
+}
+
+input:focus, input:active, button:focus, button:active, select:focus, select:active, option:focus, option:active{
+    border-color: rgb(255, 154, 30);
+    background-color: rgb(255, 199, 130);
+    outline: none;
+}
+
+.clear_btn{
+    text-decoration: none;
+    color: grey;
+    margin: 10px 20px;
+    min-width: 125px;
+}
+
+.clear_btn:hover{
+    cursor: pointer;
+}
+
+input[type="submit"], .load_image{
+    border: 2px solid rgb(255, 154, 30);
+    background-color: white;
+    cursor: pointer;
+    margin: 10px 20px;
+    padding: 10px 20px;
+    border-radius: 15px;
+}
+
+input[type="submit"]:hover, .load_image:hover{
+    background-color: rgb(255, 154, 30);
+}
+
+.button_panel{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    width: 35%;
+}
+
+.columns{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.user_image{
+    border: 1px solid grey;
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+}
+
+.image_column{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+select{
+    background-color: white;
+}
