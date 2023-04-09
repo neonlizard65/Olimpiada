@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
 from flask_migrate import Migrate
-from models import Visitor, Subdivision
+from models import Visitor, Subdivision, Employee, Request, Visit, VisitorPass, VisitorRequest
 from connection import db
 import pandas as pd
 from models import Visitor
@@ -53,3 +53,40 @@ def subdivision():
     subdivisions = db.session.query(Subdivision).all()
     return str(subdivisions)
 
+
+@app.route("/employee")
+def employee():
+    employees = db.session.query(Employee).all()
+    return str(employees)
+
+
+@app.route("/request")
+def requests():
+    requests = db.session.query(Request).all()
+    return str(requests)
+
+@app.route("/visit")
+def visit():
+    visits = db.session.query(Visit).all()
+    return str(visits)
+
+@app.route("/visitorpass")
+def VisitorPass():
+    visitorpasses = db.session.query(VisitorPass).all()
+    return str(visitorpasses)
+
+@app.route("/visitorrequest")
+def VisitorRequest():
+    visitorrequests = db.session.query(VisitorRequest).all()
+    return str(visitorrequests)
+
+@app.route("/import")
+def imported():
+    excel_data = pd.read_excel("import/Сессия_1.xlsx", 2)
+    data = pd.DataFrame(excel_data)
+    for index, row in data.iterrows():
+        subdivision = db.session.query(Subdivision).filter_by(name=row[1]).first()
+
+        db.session.add(Employee(employeeID=row[2], fio=row[0], subdivisionId=subdivision.subdivisionID, login=None, password=None))
+    db.session.commit()
+    return "ok"
