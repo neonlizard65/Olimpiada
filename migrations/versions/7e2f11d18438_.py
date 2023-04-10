@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 05157e24d59d
+Revision ID: 7e2f11d18438
 Revises: 
-Create Date: 2023-04-02 22:05:36.901377
+Create Date: 2023-04-10 18:10:07.319608
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '05157e24d59d'
+revision = '7e2f11d18438'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -44,6 +44,7 @@ def upgrade():
     sa.Column('employeeID', sa.Integer(), nullable=False),
     sa.Column('fio', sa.String(length=50), nullable=False),
     sa.Column('subdivisionId', sa.Integer(), nullable=False),
+    sa.Column('isotdel', sa.Boolean(), nullable=True),
     sa.Column('login', sa.String(length=30), nullable=True),
     sa.Column('password', sa.String(length=30), nullable=True),
     sa.ForeignKeyConstraint(['subdivisionId'], ['subdivision.subdivisionID'], ),
@@ -67,6 +68,7 @@ def upgrade():
     sa.Column('visitID', sa.Integer(), nullable=False),
     sa.Column('employeeId', sa.Integer(), nullable=True),
     sa.Column('date', sa.DateTime(), nullable=True),
+    sa.Column('group', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['employeeId'], ['employee.employeeID'], ),
     sa.PrimaryKeyConstraint('visitID')
     )
@@ -78,6 +80,8 @@ def upgrade():
     sa.Column('end_date', sa.DateTime(), nullable=True),
     sa.Column('reason', sa.String(), nullable=True),
     sa.Column('group', sa.Integer(), nullable=True),
+    sa.Column('subdivisionId', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['subdivisionId'], ['subdivision.subdivisionID'], ),
     sa.ForeignKeyConstraint(['visitId'], ['visit.visitID'], ),
     sa.ForeignKeyConstraint(['visitorId'], ['visitor.visitorID'], ),
     sa.PrimaryKeyConstraint('visitor_passID')

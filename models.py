@@ -54,10 +54,10 @@ class Visitor(db.Model):
     passport_scan = db.Column("passport_scan", db.String(255))
     photo = db.Column("photo", db.String(255))
     
-    def __init__(self, visitorID, login, password, email, surname, firstname, patronym, phone, birthdate, organization, passport_series, passport_number):
+    def __init__(self, visitorID:int, login:str, password, email, surname, firstname, patronym, phone, birthdate, organization, passport_series, passport_number):
         self.visitorID = visitorID
         self.login = login
-        self.passwor = password
+        self.password = password
         self.email = email
         self.surname = surname
         self.firstname = firstname
@@ -70,9 +70,8 @@ class Visitor(db.Model):
         
     def __repr__(self):
         return f"({self.visitorID}) {self.surname} {self.firstname} {self.patronym}"
-    
+      
 class Request(db.Model):
-    
     __tablename__ = "request"
     
     requestID = db.Column("requestID", db.Integer, primary_key=True)
@@ -95,7 +94,10 @@ class Request(db.Model):
         self.subdivisionId = subdivisionId
         self.approved = approved
         self.employeeId = employeeId
-        
+    
+    def __repr__(self):
+        pass  
+    
 class Visit(db.Model):
     
     __tablename__ = "visit"
@@ -103,7 +105,16 @@ class Visit(db.Model):
     visitID = db.Column("visitID", db.Integer, primary_key=True)
     employeeId = db.Column("employeeId", db.ForeignKey("employee.employeeID"))
     date = db.Column("date", db.DateTime)
+    group = db.Column("group", db.Integer)
     
+    def __init__(self, visitID, employeeId, date, group):
+        self.visitID = visitID
+        self.employeeId = employeeId
+        self.date = date
+        self.group = group
+        
+    def __repr__(self):
+        pass  
 
 class VisitorPass(db.Model):
     
@@ -116,6 +127,21 @@ class VisitorPass(db.Model):
     end_date = db.Column("end_date", db.DateTime)
     reason = db.Column("reason", db.String)
     group = db.Column("group", db.Integer)
+    subdivisionId = db.Column("subdivisionId", db.ForeignKey("subdivision.subdivisionID"))
+    
+    
+    def __init__(self, visitor_passID, visitorId, visitId, start_date, end_date, reason, group, subdivisionId):
+        self.visitor_passID = visitor_passID
+        self.visitorId = visitorId
+        self.visitId = visitId
+        self.start_date = start_date
+        self.end_date = end_date
+        self.reason = reason
+        self.group = group
+        self.subdivisionId = subdivisionId
+    
+    def __repr__(self):
+        pass  
     
 class VisitorRequest(db.Model):
     
@@ -125,3 +151,13 @@ class VisitorRequest(db.Model):
     visitorId = db.Column("visitorId", db.ForeignKey("visitor.visitorID"))
     requestId = db.Column("requestId", db.ForeignKey("request.requestID"))
     group = db.Column("group", db.Integer)
+    
+    def __init__(self, visitor_requestID, visitorId, requestId, group):
+        self.visitor_requestID = visitor_requestID
+        self.visitorId = visitorId
+        self.requestId = requestId
+        self.group = group
+        
+    def __repr__(self):
+        pass  
+        
