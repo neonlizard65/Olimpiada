@@ -1,23 +1,26 @@
 from connection import db
+from dataclasses import dataclass
 
+@dataclass
 class Subdivision(db.Model):
     __tablename__ = "subdivision" #Table name
+    
+    subdivisionID: int
+    name: str
     
     subdivisionID = db.Column("subdivisionID", db.Integer, primary_key=True) #ID, PK
     name = db.Column("name", db.String(30), nullable=False) #Name of subdivision
     
-    #Constructor
-    def __init__(self, subdivisionID, name):
-        self.subdivisionID = subdivisionID
-        self.name = name
-    
-    #db.String representation
-    def __repr__(self):
-        return f"({self.subdivisionID}) {self.name}"
-    
-
+@dataclass
 class Employee(db.Model):
     __tablename__ = "employee"
+    
+    employeeID: int
+    fio: str
+    subdivisionId: int
+    isotdel: bool
+    login: str
+    password: str
     
     employeeID = db.Column("employeeID", db.Integer, primary_key=True)
     fio = db.Column("fio", db.String(50), nullable=False)
@@ -25,19 +28,26 @@ class Employee(db.Model):
     isotdel = db.Column("isotdel", db.Boolean)
     login = db.Column("login", db.String(30))
     password = db.Column("password", db.String(30))
-    
-    def __init__(self, employeeID, fio, subdivisionId, login, password):
-        self.employeeID = employeeID
-        self.fio = fio
-        self.subdivisionId = subdivisionId
-        self.login = login
-        self.password = password
-        
-    def __repr__(self):
-        return f"({self.employeeID}) {self.fio}, {self.subdivisionId}, {self.login}, {self.password}"
 
+
+@dataclass
 class Visitor(db.Model):
     __tablename__ = "visitor"
+    
+    visitorID: int
+    login: str
+    password: str
+    email: str
+    surname: str
+    firstname: str
+    patronym: str
+    birthdate: str
+    phone: str
+    organization: str
+    passport_series: str
+    passport_number: str
+    passport_scan: str
+    photo: str
     
     visitorID = db.Column("visitorID", db.Integer, primary_key=True)
     login = db.Column("login", db.String(20))
@@ -53,26 +63,20 @@ class Visitor(db.Model):
     passport_number = db.Column("passport_number", db.String)
     passport_scan = db.Column("passport_scan", db.String(255))
     photo = db.Column("photo", db.String(255))
-    
-    def __init__(self, visitorID:int, login:str, password, email, surname, firstname, patronym, phone, birthdate, organization, passport_series, passport_number):
-        self.visitorID = visitorID
-        self.login = login
-        self.password = password
-        self.email = email
-        self.surname = surname
-        self.firstname = firstname
-        self.patronym = patronym
-        self.birthdate = birthdate
-        self.phone = phone
-        self.organization = organization
-        self.passport_number = passport_number
-        self.passport_series = passport_series
         
-    def __repr__(self):
-        return f"({self.visitorID}) {self.surname} {self.firstname} {self.patronym}"
-      
+    
 class Request(db.Model):
     __tablename__ = "request"
+    
+    requestID: int
+    date: str
+    type: bool
+    start_date: str
+    end_date: str
+    reason: str
+    subdivisionId: int
+    approved: bool
+    employeeId: int
     
     requestID = db.Column("requestID", db.Integer, primary_key=True)
     date = db.Column("date", db.DateTime)
@@ -84,41 +88,33 @@ class Request(db.Model):
     approved = db.Column("approved", db.Boolean)
     employeeId = db.Column("employeeId", db.ForeignKey("employee.employeeID"))
     
-    def __init__(self, requestID, date, type, start_date, end_date, reason, subdivisionId, approved, employeeId):
-        self.requestID = requestID
-        self.date = date
-        self.type = type
-        self.start_date = start_date
-        self.end_date = end_date
-        self.reason = reason
-        self.subdivisionId = subdivisionId
-        self.approved = approved
-        self.employeeId = employeeId
-    
-    def __repr__(self):
-        pass  
     
 class Visit(db.Model):
     
     __tablename__ = "visit"
     
+    visitID: int
+    employeeId: int
+    date: str
+    group: int
+    
     visitID = db.Column("visitID", db.Integer, primary_key=True)
     employeeId = db.Column("employeeId", db.ForeignKey("employee.employeeID"))
     date = db.Column("date", db.DateTime)
     group = db.Column("group", db.Integer)
-    
-    def __init__(self, visitID, employeeId, date, group):
-        self.visitID = visitID
-        self.employeeId = employeeId
-        self.date = date
-        self.group = group
-        
-    def __repr__(self):
-        pass  
+
 
 class VisitorPass(db.Model):
     
     __tablename__ = "visitor_pass"
+    
+    visitor_passID: int
+    visitorId: int
+    start_date: str
+    end_date: str
+    reason: str
+    group: int
+    subdivisionId: int
     
     visitor_passID = db.Column("visitor_passID", db.Integer, primary_key=True)
     visitorId = db.Column("visitorId", db.ForeignKey("visitor.visitorID"))
@@ -130,34 +126,18 @@ class VisitorPass(db.Model):
     subdivisionId = db.Column("subdivisionId", db.ForeignKey("subdivision.subdivisionID"))
     
     
-    def __init__(self, visitor_passID, visitorId, visitId, start_date, end_date, reason, group, subdivisionId):
-        self.visitor_passID = visitor_passID
-        self.visitorId = visitorId
-        self.visitId = visitId
-        self.start_date = start_date
-        self.end_date = end_date
-        self.reason = reason
-        self.group = group
-        self.subdivisionId = subdivisionId
-    
-    def __repr__(self):
-        pass  
-    
 class VisitorRequest(db.Model):
     
     __tablename__ = "visitor_request"
+    
+    visitor_requestID: int
+    visitorId: int
+    requestId: int
+    group: int
     
     visitor_requestID = db.Column("visitor_requestID", db.Integer, primary_key=True)
     visitorId = db.Column("visitorId", db.ForeignKey("visitor.visitorID"))
     requestId = db.Column("requestId", db.ForeignKey("request.requestID"))
     group = db.Column("group", db.Integer)
-    
-    def __init__(self, visitor_requestID, visitorId, requestId, group):
-        self.visitor_requestID = visitor_requestID
-        self.visitorId = visitorId
-        self.requestId = requestId
-        self.group = group
         
-    def __repr__(self):
-        pass  
         

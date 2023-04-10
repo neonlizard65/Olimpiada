@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_migrate import Migrate
 from models import Visitor, Subdivision, Employee, Request, Visit, VisitorPass, VisitorRequest
 from connection import db
 import pandas as pd
 from models import Visitor
-
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://aleksei:123@localhost/olimp" #Connection to db, imports are postgresql and psycopg2-binary
@@ -24,7 +23,8 @@ def request_form():
 def visitors():
     if request.method == 'GET':
         visitors = db.session.query(Visitor).all()
-        return str(visitors)
+        return jsonify(visitors)
+    
     
 @app.route("/visitors/<int:id>", methods=['GET', 'POST', 'PUT', 'DELETE'])
 def visitor_by_id(id):
@@ -32,7 +32,7 @@ def visitor_by_id(id):
         visitor = db.get_or_404(Visitor, id)
         return str(visitor)
     elif request.method == 'POST':
-        pass
+        pass 
     elif request.method == 'PUT':
         pass
     elif request.method == 'DELETE':
@@ -42,7 +42,7 @@ def visitor_by_id(id):
 @app.route("/subdivision", methods=['GET'])
 def subdivision():
     subdivisions = db.session.query(Subdivision).all()
-    return str(subdivisions)
+    return str(subdivisions) 
 
 
 @app.route("/employee", methods=['GET'])
@@ -71,7 +71,7 @@ def visitorrequest():
     visitorrequests = db.session.query(VisitorRequest).all()
     return str(visitorrequests)
 
-"""
+
 #Импорт
 @app.route("/import")
 def imported():
@@ -130,4 +130,3 @@ def imported():
         db.session.commit()
     
     return "ok"
-"""
