@@ -64,7 +64,7 @@ class Visitor(db.Model):
     passport_scan = db.Column("passport_scan", db.String(255))
     photo = db.Column("photo", db.String(255))
         
-    
+@dataclass
 class Request(db.Model):
     __tablename__ = "request"
     
@@ -88,7 +88,7 @@ class Request(db.Model):
     approved = db.Column("approved", db.Boolean)
     employeeId = db.Column("employeeId", db.ForeignKey("employee.employeeID"))
     
-    
+@dataclass    
 class Visit(db.Model):
     
     __tablename__ = "visit"
@@ -103,7 +103,7 @@ class Visit(db.Model):
     date = db.Column("date", db.DateTime)
     group = db.Column("group", db.Integer)
 
-
+@dataclass
 class VisitorPass(db.Model):
     
     __tablename__ = "visitor_pass"
@@ -125,7 +125,7 @@ class VisitorPass(db.Model):
     group = db.Column("group", db.Integer)
     subdivisionId = db.Column("subdivisionId", db.ForeignKey("subdivision.subdivisionID"))
     
-    
+@dataclass
 class VisitorRequest(db.Model):
     
     __tablename__ = "visitor_request"
