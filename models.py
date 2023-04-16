@@ -136,8 +136,8 @@ class VisitorRequest(db.Model):
     group: int
     
     visitor_requestID = db.Column("visitor_requestID", db.Integer, primary_key=True)
-    visitorId = db.Column("visitorId", db.ForeignKey("visitor.visitorID"))
-    requestId = db.Column("requestId", db.ForeignKey("request.requestID"))
+    visitorId = db.Column("visitorId", db.ForeignKey("visitor.visitorID", ondelete="CASCADE"))
+    requestId = db.Column("requestId", db.ForeignKey("request.requestID", ondelete="CASCADE"))
     group = db.Column("group", db.Integer)
         
         

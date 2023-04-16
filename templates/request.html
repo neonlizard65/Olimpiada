@@ -11,7 +11,7 @@
 <body>
     <h1>Форма записи на посещение мероприятия</h1>
     <div class="form_grid">
-        <form action="" method="post">
+        <form action="/request" method="post">
             <div class="row">
                 <div class="box">
                     <h1 class="box_header">Информация для пропуска</h1>
@@ -19,9 +19,9 @@
                         <label for="">Срок действия заявки:</label>
                         <br>
                         <label for="start_date" style="min-width: 0px">с*</label>
-                        <input type="date" placeholder="" id="start_date" >
+                        <input type="date" placeholder="" id="start_date" name="start_date">
                         <label for="end_date" style="min-width: 0px"> по </label>
-                        <input type="date" id="end_date">
+                        <input type="date" id="end_date" name="end_date">
                         <br>
                         <label for="reason">Цель посещения:</label>
                         <br>
@@ -87,7 +87,7 @@
                             <input type="text" maxlength="4" name="passport_series" id="passport_series">
                             <br>
                             <label for="passport_number">Номер:</label>
-                            <input type="text" maxlength="6" name="passport_series" id="passport_series">
+                            <input type="text" maxlength="6" name="passport_number" id="passport_number">
                         </div>
                         <div class="form image_column">
                             <img class="user_image" src="{{url_for('static', filename='res/User.jpg')}}" alt="User">

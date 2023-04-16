@@ -1,11 +1,12 @@
-from math import e
 from flask import Flask, render_template, request, redirect, jsonify, Response
 from flask_migrate import Migrate
 from models import Visitor, Subdivision, Employee, Request, Visit, VisitorPass, VisitorRequest
 from connection import db
 import pandas as pd
-from models import Visitor
 import json
+from datetime import datetime
+import hashlib
+
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://aleksei:123@localhost/olimp" #Connection to db, imports are postgresql and psycopg2-binary
@@ -145,18 +146,52 @@ def requests():
         requests = db.session.query(Request).all()
         return jsonify(requests)
     elif request.method == 'POST':
-        date = request.json['date']
-        type = request.json['type']
-        start_date = request.json['start_date']
-        end_date = request.json['end_date']
-        reason = request.json['reason']
-        subdivisionId = request.json['subdivisionId']
-        approved = request.json['approved']
-        employeeId = request.json['employeeId']
-        db.session.add(Request(date = date, type = type, start_date = start_date, end_date = end_date, reason = reason, subdivisionId = subdivisionId, approved = approved, employeeId = employeeId))
-        db.session.commit()
-        return Response("Объект создан", status = 204)
-
+        if request.is_json:
+            date = request.json['date']
+            type = request.json['type']
+            start_date = request.json['start_date']
+            end_date = request.json['end_date']
+            reason = request.json['reason']
+            subdivisionId = request.json['subdivisionId']
+            approved = request.json['approved']
+            employeeId = request.json['employeeId']
+            db.session.add(Request(date = date, type = type, start_date = start_date, end_date = end_date, reason = reason, subdivisionId = subdivisionId, approved = approved, employeeId = employeeId))
+            db.session.commit()
+            return Response("Объект создан", status = 204)
+        else:
+            date = datetime.now()
+            type = request.form.get('type')
+            start_date = request.form.get('start_date')
+            end_date = request.form.get('end_date')
+            reason = request.form.get('reason')
+            subdivisionId = request.form.get('subdivision')
+            approved = request.form.get('approved')
+            employeeId = request.form.get('employee_fio')
+            new_request = Request(date = date, type = type, start_date = start_date, end_date = end_date, reason = reason, subdivisionId = subdivisionId, approved = approved, employeeId = employeeId)
+            db.session.add(new_request)
+            db.session.commit()
+            
+            surname = request.form.get('surname')
+            firstname = request.form.get('firstname')
+            patronym = request.form.get('patronym')
+            phone = request.form.get('phone')
+            email = request.form.get('email')
+            organization = request.form.get('organization')
+            additional = request.form.get('additional')
+            birthdate = request.form.get('birthdate')
+            passport_series = request.form.get('passport_series')
+            passport_number = request.form.get('passport_number')
+            print(passport_series, passport_number)
+            
+            visitor = db.session.query(Visitor).filter_by(passport_number = passport_number, passport_series = passport_series).first()
+            if visitor is None:
+                visitor = Visitor(surname = surname, firstname = firstname, patronym = patronym, phone = phone, email = email, organization = organization, birthdate=birthdate, passport_series = passport_series, passport_number = passport_number)    
+                db.session.add(visitor)
+                db.session.commit()
+            db.session.add(VisitorRequest(visitorId = visitor.visitorID, requestId = new_request.requestID))
+            db.session.commit()
+            
+            return Response("Объект создан", status = 204)
 
 @app.route("/request/<int:id>", methods=['GET', 'PUT', 'DELETE'])
 def requests_by_id(id):
@@ -302,8 +337,9 @@ def imported():
     for index, row in data.iterrows():
         fio = row[0].split(" ")
         passport = row[4].split(" ")
+        password = hashlib.md5(str(row[6]).encode()).digest()
         
-        visitor = Visitor(visitorID=None, organization=None, surname=fio[0] ,firstname=fio[1], patronym=fio[2], phone=row[1], email=str(row[2]).lower(), birthdate=row[3], passport_number=passport[0], passport_series=passport[1], login=row[5], password=row[6])
+        visitor = Visitor(visitorID=None, organization=None, surname=fio[0] ,firstname=fio[1], patronym=fio[2], phone=row[1], email=str(row[2]).lower(), birthdate=row[3], passport_number=passport[0], passport_series=passport[1], login=row[5], password=password)
         db.session.add(visitor)
         visit_data = row[7].split('_')
         db.session.commit()
@@ -339,6 +375,10 @@ def imported():
     
     return "ok"
 
+
+@app.errorhandler(404)
+def error404(e):
+    return render_template("404.html"), 404
 
 
 @app.route("/test")
