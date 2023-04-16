@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Групповая заявка</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/menu.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/request.css')}}">
+</head>
+<body>
+    <h1>Форма записи на групповое посещение мероприятия</h1>
+    <div class="form_grid">
+        <form action="" method="post">
+            <div class="row">
+                <div class="box">
+                    <h1 class="box_header">Информация для пропуска</h1>
+                    <div class="form">
+                        <label for="">Срок действия заявки:</label>
+                        <br>
+                        <label for="start_date" style="min-width: 0px">с*</label>
+                        <input type="date" placeholder="" id="start_date" >
+                        <label for="end_date" style="min-width: 0px"> по </label>
+                        <input type="date" id="end_date">
+                        <br>
+                        <label for="reason">Цель посещения:</label>
+                        <br>
+                        <select name="reason" id="reason">
+                            <!--for-->
+                            <option value=""></option>
+                        </select>
+                    </div> 
+                </div>
+                <div class="box">
+                    <h1 class="box_header">Принимающая сторона</h1>
+                    <div class="form">
+                        <label for="subdivision">Подразделение*:</label>
+                        <br>
+                        <select name="subdivision" id="subdivision">
+                            <!--for-->
+                            <option value=""></option>
+                        </select>
+                        <br>
+                        <label for="employee_fio">ФИО*:</label>
+                        <br>
+                        <select name="employee_fio" id="employee_fio">
+                            <!--for-->
+                            <option value=""></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box">
+                    <h1 class="box_header">
+                        Информация о посетителе
+                    </h1>
+                    <div class="columns">
+                        <div class="form">
+                            <label for="surname">Фамилия:</label>
+                            <input type="text" name="surname" id="surname">
+                            <br>
+                            <label for="firstname">Имя:</label>
+                            <input type="text" name="firstname" id="firstname">
+                            <br>
+                            <label for="patronym">Отчество:</label>
+                            <input type="text" name="patronym" id="patronym">
+                            <br>
+                            <!--TODO-->
+                            <label for="phone">Телефон:</label>
+                            <input type="tel" name="phone" id="phone">
+                            <br>
+                            <label for="email">E-mail:</label>
+                            <input type="email" name="email" id="email">
+                        </div>
+                        <div class="form">
+                            <label for="organization">Организация:</label>
+                            <input type="text" name="organization" id="organization">
+                            <br>
+                            <label for="additional">Примечание:</label>
+                            <input type="text" name="additional" id="additional">
+                            <br>
+                            <label for="birthdate">Дата рождения:</label>
+                            <input type="date" name="birthdate" id="birthdate">
+                            <br>
+                            <label for="passport_series">Серия:</label>
+                            <input type="text" maxlength="4" name="passport_series" id="passport_series">
+                            <br>
+                            <label for="passport_number">Номер:</label>
+                            <input type="text" maxlength="6" name="passport_series" id="passport_series">
+                        </div>
+                        <div class="form image_column">
+                            <img class="user_image" src="{{url_for('static', filename='res/User.jpg')}}" alt="User">
+                            <button class="load_image">Загрузить фото</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="box">
+                    <h1 class="box_header">Прикрепляемые документы</h1>
+                    <div class="form">
+                        <input type="file">
+                    </div>
+                </div>
+                <div class="button_panel">
+                    <div class="clear_btn" onclick="clear_fields()">Очистить форму</div>
+                    <input type="submit" value="Оформить заявку">
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="{{url_for('static', filename='script/indiv_request.js')}}"></script>
+</body>
+</html>

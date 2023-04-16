@@ -18,7 +18,9 @@ def index():
 
 @app.route("/request.html")
 def request_form():
-    return render_template('request.html') 
+    subdivisions = db.session.query(Subdivision).all()
+    employees = db.session.query(Employee).all()
+    return render_template('request.html', subdivisions = subdivisions, employees = employees) 
 
 @app.route("/visitors", methods=['GET', 'POST'])
 def visitors():
